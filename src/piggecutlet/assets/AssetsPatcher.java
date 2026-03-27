@@ -59,7 +59,7 @@ public class AssetsPatcher {
       return libnativePathList;
     }
 
-    String[] abiArray = {"armeabi_v7a", "arm64_v8a", "x86", "x86_64"};
+    String[] abiArray = {"armeabi-v7a", "arm64-v8a", "x86", "x86_64"};
     for (String abi : abiArray) {
       Path libnativePath = libDir.resolve(abi).resolve("libnative-lib.so");
       if (Files.exists(libnativePath)) {
@@ -106,6 +106,7 @@ public class AssetsPatcher {
       // これをlibnative-lib.so分繰り返す
       try {
         Files.write(libnativePath, libnativeByte);
+        System.out.println("パッチ完了 " + libnativePath);
       } catch (IOException e) {
         e.printStackTrace();
       }
