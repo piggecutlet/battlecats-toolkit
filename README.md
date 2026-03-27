@@ -26,7 +26,7 @@
 
 - バージョン
 
-  `3.0.1`
+  `2.12.1`
 
 - GitHub
   https://github.com/iBotPeaches/Apktool
