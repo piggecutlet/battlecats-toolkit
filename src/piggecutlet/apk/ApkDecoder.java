@@ -8,7 +8,10 @@ import piggecutlet.helper.ProcessBuilderHelper;
 public class ApkDecoder {
 
   public void execute() {
+    System.out.println("APK をデコードします。");
+
     if (!decode()) {
+      System.err.println("APK のデコードに失敗しました。");
       System.exit(1);
     }
   }
@@ -16,7 +19,6 @@ public class ApkDecoder {
   private boolean decode() {
     List<String> command = new ArrayList<>();
 
-    // java -jar %tool%/apktool.jar d app.xapk -f -o app -s
     // java -jar $env:tool/apktool.jar d app.xapk -f -o app -s
 
     command.add("java");

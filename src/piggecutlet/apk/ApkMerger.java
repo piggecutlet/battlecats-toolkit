@@ -8,7 +8,10 @@ import piggecutlet.helper.ProcessBuilderHelper;
 public class ApkMerger {
 
   public void execute() {
+    System.out.println("XAPK を APK にマージします。");
+
     if (!merge()) {
+      System.err.println("XAPK のマージに失敗しました。");
       System.exit(1);
     }
   }
@@ -16,7 +19,6 @@ public class ApkMerger {
   private boolean merge() {
     List<String> command = new ArrayList<>();
 
-    // java -jar %tool%/APKEditor.jar m -f -i app.xapk -o app.apk
     // java -jar $env:tool/APKEditor.jar m -f -i app.xapk -o app.apk
 
     command.add("java");

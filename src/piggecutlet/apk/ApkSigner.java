@@ -8,7 +8,10 @@ import piggecutlet.helper.ProcessBuilderHelper;
 public class ApkSigner {
 
   public void execute() {
+    System.out.println("APK に署名します。");
+
     if (!sign()) {
+      System.err.println("APK の署名に失敗しました。");
       System.exit(1);
     }
   }

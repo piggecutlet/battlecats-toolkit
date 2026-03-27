@@ -14,7 +14,7 @@ public class PathConstant {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   /** 「tool」ディレクトリ. */
-  private static final Path TOOL_DIR = Paths.get(System.getenv("tool"));
+  private static final Path TOOL_DIR = Paths.get("lib");
 
   /** 「tool\APKEditor.jar」. */
   public static final Path APKEDITOR = TOOL_DIR.resolve("APKEditor.jar");

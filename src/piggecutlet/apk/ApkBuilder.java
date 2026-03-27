@@ -7,8 +7,13 @@ import piggecutlet.helper.ProcessBuilderHelper;
 
 public class ApkBuilder {
 
+
+
   public void execute() {
+    System.out.println("APK をビルドします。");
+
     if (!build()) {
+      System.err.println("APK のビルドに失敗しました。");
       System.exit(1);
     }
   }
