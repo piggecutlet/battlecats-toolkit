@@ -44,7 +44,7 @@ public class Main {
         return;
     }
 
-    if (args[0] == "decrypt") {
+    if ("decrypt".equals(args[0])) {
       // XAPK の場合は APK に変換
       if (Files.exists(PathConstant.APP_XAPK)) {
         new ApkMerger().execute();
@@ -59,7 +59,7 @@ public class Main {
       return;
     }
 
-    if (args[0] == "encrypt") {
+    if ("encrypt".equals(args[0])) {
       new AssetsEncryptor(lang).main();
 
       // app ディレクトリが存在する場合は再ビルドする
