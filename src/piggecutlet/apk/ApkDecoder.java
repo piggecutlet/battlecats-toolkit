@@ -37,7 +37,7 @@ public class ApkDecoder {
     command.add("--force");
     command.add("--no-src");
     command.add("--output");
-    command.add(PathConstant.OUTPUT_APK.toString());
+    command.add(PathConstant.APP_DIR.toString());
 
     if (ProcessBuilderHelper.execute(command)) {
       return true;
