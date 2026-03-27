@@ -4,8 +4,8 @@
 
 - ログの改善 `lib/Logger.java` とか？
 
-- apktool v3 系に移行する
-  --debug が --debugable になったり変更が色々あるので確認する
+- apktool を v3 系に更新する
+  `--debug` が `--debugable` になったり変更があるので確認してから更新する
 
 ## 未使用
 
