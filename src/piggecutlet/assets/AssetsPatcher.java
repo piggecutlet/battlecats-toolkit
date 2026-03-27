@@ -172,16 +172,16 @@ public class AssetsPatcher {
           libnativeByte[i + j] = newHash3[j];
         }
 
-        System.out.println();
-        System.out.println(oldPath.getFileName());
-        System.out.println("MD5ハッシュ値(oldHash → newHash): " + Arrays.toString(oldHash) + " "
-            + Arrays.toString(newHash));
-        System.out.println("16進数文字列(oldHash2 → newHash2): " + oldHash2 + " " + newHash2);
-        System.out.println("検索するバイト配列(oldHash3 → newHash3): " + Arrays.toString(oldHash3) + " "
-            + Arrays.toString(newHash3));
-        System.out.println(
-            "VSCode: " + hexFormat.formatHex(oldHash3) + " → " + hexFormat.formatHex(newHash3));
-        System.out.println();
+        // System.out.println();
+        // System.out.println(oldPath.getFileName());
+        // System.out.println("MD5ハッシュ値(oldHash → newHash): " + Arrays.toString(oldHash) + " "
+        // + Arrays.toString(newHash));
+        // System.out.println("16進数文字列(oldHash2 → newHash2): " + oldHash2 + " " + newHash2);
+        // System.out.println("検索するバイト配列(oldHash3 → newHash3): " + Arrays.toString(oldHash3) + " "
+        // + Arrays.toString(newHash3));
+        // System.out.println(
+        // "VSCode: " + hexFormat.formatHex(oldHash3) + " → " + hexFormat.formatHex(newHash3));
+        // System.out.println();
       }
 
     }
