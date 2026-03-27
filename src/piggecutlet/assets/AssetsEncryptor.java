@@ -67,9 +67,9 @@ public class AssetsEncryptor {
     // 暗号化されたリストファイルを作成する
     encryptList();
 
-    // System.out.println("Start: libnative-lib.so patch");
-    // AssetsPatcher patcher = new AssetsPatcher();
-    // patcher.main();
+    System.out.println("Start: libnative-lib.so patch");
+    AssetsPatcher patcher = new AssetsPatcher();
+    patcher.main();
 
     // アセットをコピーする
     copyAssets();
