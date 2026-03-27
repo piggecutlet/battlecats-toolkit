@@ -1,5 +1,11 @@
 # Battle Cats Toolkit
 
+## 使い方
+
+```
+java -jar battlecats-toolkit.jar { decrypt | encrypt } { jp | kr | en | tw }
+```
+
 ## 外部ライブラリ
 
 ### APKEditor.jar
