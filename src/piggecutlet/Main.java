@@ -66,6 +66,7 @@ public class Main {
 
       // app ディレクトリが存在する場合は再ビルドする
       if (Files.exists(PathConstant.APP_DIR)) {
+        System.out.println();
         new ApkBuilder().execute();
         System.out.println();
 

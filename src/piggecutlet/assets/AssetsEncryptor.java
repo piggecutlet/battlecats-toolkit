@@ -37,9 +37,9 @@ public class AssetsEncryptor {
 
   /** アセットを暗号化するメソッド. */
   public void main() {
-    // 「workspace\encrypted」ディレクトリが存在しない場合は終了する
-    if (!Files.isDirectory(PathConstant.ENCRYPTED_DIR)) {
-      PrintUtil.notExist(PathConstant.ENCRYPTED_DIR.toString());
+    // 「workspace\decrypted」ディレクトリが存在しない場合は終了する
+    if (!Files.isDirectory(PathConstant.DECRYPTED_DIR)) {
+      PrintUtil.notExist(PathConstant.DECRYPTED_DIR.toString());
       System.exit(1);
     }
 
