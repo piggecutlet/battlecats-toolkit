@@ -6,6 +6,8 @@
 java -jar battlecats-toolkit.jar { decrypt | encrypt } { jp | kr | en | tw }
 ```
 
+- Java 17 で追加された `java.util.HexFormat` を使用しているため最低でも Java 17 が必要です
+
 ## 外部ライブラリ
 
 ### APKEditor.jar
