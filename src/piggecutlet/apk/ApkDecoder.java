@@ -14,6 +14,8 @@ public class ApkDecoder {
       System.err.println("APK のデコードに失敗しました。");
       System.exit(1);
     }
+
+    System.out.println("APK のデコードが完了しました。");
   }
 
   private boolean decode() {

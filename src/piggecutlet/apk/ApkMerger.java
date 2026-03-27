@@ -14,6 +14,8 @@ public class ApkMerger {
       System.err.println("XAPK のマージに失敗しました。");
       System.exit(1);
     }
+
+    System.out.println("XAPK のマージが完了しました。");
   }
 
   private boolean merge() {

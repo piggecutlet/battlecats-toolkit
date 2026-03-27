@@ -48,10 +48,12 @@ public class Main {
       // XAPK の場合は APK に変換
       if (Files.exists(PathConstant.APP_XAPK)) {
         new ApkMerger().execute();
+        System.out.println();
       }
 
       if (Files.exists(PathConstant.APP_APK)) {
         new ApkDecoder().execute();
+        System.out.println();
       }
 
       new AssetsDecryptor(lang).main();
@@ -65,6 +67,7 @@ public class Main {
       // app ディレクトリが存在する場合は再ビルドする
       if (Files.exists(PathConstant.APP_DIR)) {
         new ApkBuilder().execute();
+        System.out.println();
 
         new ApkSigner().execute();
       }
