@@ -27,6 +27,10 @@ java -jar battlecats-toolkit.jar decrypt jp
 java -jar battlecats-toolkit.jar encrypt jp
 ```
 
+## 実行時間について
+
+- JAR だと `encrypt` に2分程かかりますが Eclipse だと10秒程で完了するため Eclipse で実行することを推奨します
+
 ## 外部ライブラリ
 
 ### APKEditor.jar
