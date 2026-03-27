@@ -64,6 +64,8 @@ public class Main {
     }
 
     if ("encrypt".equals(args[0])) {
+      System.out.println("開始 encrypt");
+
       new AssetsEncryptor(lang).main();
 
       // app ディレクトリが存在する場合は再ビルドする
