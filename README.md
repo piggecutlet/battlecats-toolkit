@@ -1,12 +1,31 @@
 # Battle Cats Toolkit
 
+## 要件
+
+- `java.util.HexFormat` を使用しているため Java 17 以上が必要です
+
 ## 使い方
+
+1. https://github.com/piggecutlet/battlecats-toolkit/releases で Zip をダウンロード
+1. ZIP を展開
+1. `app.apk` か `app.xapk` を `battlecats-toolkit.jar` と同じフォルダーに配置
+1. コマンドを実行
+
+- Usage
 
 ```
 java -jar battlecats-toolkit.jar { decrypt | encrypt } { jp | kr | en | tw }
 ```
 
-- Java 17 で追加された `java.util.HexFormat` を使用しているため最低でも Java 17 が必要です
+- 例
+
+```
+java -jar battlecats-toolkit.jar decrypt jp
+```
+
+```
+java -jar battlecats-toolkit.jar encrypt jp
+```
 
 ## 外部ライブラリ
 
@@ -39,26 +58,8 @@ java -jar battlecats-toolkit.jar { decrypt | encrypt } { jp | kr | en | tw }
 - GitHub
   https://github.com/iBotPeaches/Apktool
 
-### debug.keystore
+## コーディング規約
 
-- 生成
+- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
 
-```
-keytool -genkeypair -v -alias androiddebugkey -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -dname "C=US, O=Android, CN=Android Debug" -validity 36525 -storetype PKCS12 -keystore debug.keystore -storepass android
-```
-
-- 確認
-
-```
-keytool -list -v -keystore debug.keystore -storepass android
-```
-
-## ルール
-
-### コーディング規約
-
-- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html) に従う
-
-### バージョニング
-
-- [セマンティック バージョニング](https://semver.org/lang/ja/) に従う
+- [Semantic Versioning 2.0.0](https://semver.org)
