@@ -1,9 +1,12 @@
 package piggecutlet.apk;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import piggecutlet.constant.ExtensionConstant;
 import piggecutlet.constant.PathConstant;
 import piggecutlet.helper.ProcessBuilderHelper;
+import piggecutlet.util.FilesUtil;
 
 public class ApkDecoder {
 
@@ -16,6 +19,9 @@ public class ApkDecoder {
     }
 
     System.out.println("APK のデコードが完了しました。");
+
+    // 成功時は assets をコピー
+    copyAssets(PathConstant.ASSETS_DIR_BY_APKTOOL);
   }
 
   private boolean decode() {
@@ -38,6 +44,20 @@ public class ApkDecoder {
     } else {
       return false;
     }
+  }
+
+  /** リストファイルとパックファイルをコピーするメソッド. */
+  private void copyAssets(Path assets) {
+    System.err.println();
+    System.out.println("assets をコピーします。");
+
+    FilesUtil.recreateDir(PathConstant.ENCRYPTED_DIR);
+
+    List<Path> listFilePathList = FilesUtil.getFilePathList(assets, ExtensionConstant.LIST);
+    FilesUtil.copy(listFilePathList, PathConstant.ENCRYPTED_DIR);
+
+    List<Path> packFilePathList = FilesUtil.getFilePathList(assets, ExtensionConstant.PACK);
+    FilesUtil.copy(packFilePathList, PathConstant.ENCRYPTED_DIR);
   }
 
 }
