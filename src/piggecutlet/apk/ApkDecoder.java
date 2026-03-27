@@ -25,7 +25,7 @@ public class ApkDecoder {
     command.add("-jar");
     command.add(PathConstant.APKTOOL.toString());
     command.add("decode");
-    command.add(PathConstant.APP_DIR.toString());
+    command.add(PathConstant.APP_APK.toString());
     command.add("--force");
     command.add("--no-src");
     command.add("--output");
