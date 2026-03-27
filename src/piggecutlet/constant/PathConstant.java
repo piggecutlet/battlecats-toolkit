@@ -60,8 +60,9 @@ public class PathConstant {
   /** 「workspace\temp」ディレクトリ. */
   public static final Path TEMP_DIR = WORKSPACE_DIR.resolve("temp");
 
-  /** 「output\app」. */
-  public static final Path OUTPUT_APK = WORKSPACE_DIR.resolve(APP_DIR_NAME);
+  /** 「output\app.apk」. */
+  public static final Path OUTPUT_APK =
+      WORKSPACE_DIR.resolve("output").resolve(APP_APK.getFileName());
 
   /** 「workspace\app\lib」ディレクトリ(apktool.jar). */
   public static final Path LIB_DIR_BY_APKTOOL = APP_DIR.resolve("lib");
