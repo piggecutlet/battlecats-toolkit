@@ -58,6 +58,8 @@ public class Main {
 
       new AssetsDecryptor(lang).main();
 
+      System.out.println("完了 decrypt");
+
       return;
     }
 
@@ -72,6 +74,8 @@ public class Main {
 
         new ApkSigner().execute();
       }
+
+      System.out.println("完了 encrypt");
 
       return;
     }
