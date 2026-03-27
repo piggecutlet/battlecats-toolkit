@@ -27,9 +27,20 @@ java -jar battlecats-toolkit.jar decrypt jp
 java -jar battlecats-toolkit.jar encrypt jp
 ```
 
-## 実行時間について
+- decrypt
 
-- JAR だと `encrypt` に2分程かかりますが Eclipse だと10秒程で完了するため Eclipse で実行することを推奨します
+1. `app.xapk` がある場合は `app.apk` に変換します
+1. `app.apk` がある場合は `workspace/app` に展開します
+1. `workspace/encrypted` にあるファイルを復号し `workspace/decrypted` に配置します
+
+※ ファイル名に `Local` が付くファイルと `Server` が付くファイルは復号処理が異なります
+
+- encrypt
+
+1. `workspace/decrypted` にあるファイルを暗号化し `workspace/encrypted` に配置します
+1. `workspace/app` がある場合は `app.apk` にビルドし、署名します
+
+- JAR だと `encrypt` に数分かかりますが Eclipse だと数秒で完了するため Eclipse をお持ちの方はリポジトリをクローンし Eclipse で実行することをオススメします
 
 ## 外部ライブラリ
 
