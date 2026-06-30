@@ -1,7 +1,7 @@
 package piggecutlet.constant;
 
 import java.util.Map;
-import piggecutlet.util.GenerateUtil;
+import piggecutlet.helper.GenerateUtil;
 
 /** パスを定義する定数クラス. */
 public class KeyConstant {

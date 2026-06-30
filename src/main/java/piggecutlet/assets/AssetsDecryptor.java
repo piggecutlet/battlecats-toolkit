@@ -11,9 +11,9 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import piggecutlet.constant.ExtensionConstant;
 import piggecutlet.constant.PathConstant;
-import piggecutlet.util.FilesUtil;
-import piggecutlet.util.GenerateUtil;
-import piggecutlet.util.PrintUtil;
+import piggecutlet.helper.FilesUtil;
+import piggecutlet.helper.GenerateUtil;
+import piggecutlet.helper.PrintUtil;
 
 /** リストファイルとパックファイルを復号するクラス. */
 public class AssetsDecryptor {
@@ -27,8 +27,12 @@ public class AssetsDecryptor {
   /** ローカルパックファイルを復号するCipherインスタンス. */
   private Cipher localPackCipher;
 
+  /** Local パックも Server パック形式（AES/ECB）で処理する. */
+  private final boolean oldMode;
+
   /** コンストラクタ. */
-  public AssetsDecryptor(String lang) {
+  public AssetsDecryptor(String lang, boolean oldMode) {
+    this.oldMode = oldMode;
     this.listCipher = GenerateUtil.generateListCipher(Cipher.DECRYPT_MODE);
     this.serverPackCipher = GenerateUtil.generateServerPackCipher(Cipher.DECRYPT_MODE, lang);
     this.localPackCipher = GenerateUtil.generateLocalePackCipher(Cipher.DECRYPT_MODE, lang);
@@ -36,19 +40,19 @@ public class AssetsDecryptor {
 
   /** リストファイルとパックファイルを復号します. */
   public void main() {
-    // 「encrypted」ディレクトリが存在しない場合は終了する
-    if (!Files.isDirectory(PathConstant.ENCRYPTED_DIR)) {
-      PrintUtil.notExist(PathConstant.ENCRYPTED_DIR.toString());
+    // 「encrypt」ディレクトリが存在しない場合は終了する
+    if (!Files.isDirectory(PathConstant.ENCRYPT_DIR)) {
+      PrintUtil.notExist(PathConstant.ENCRYPT_DIR.toString());
       System.exit(1);
     }
 
     // リストファイルの一覧を取得する
     List<Path> filePathList =
-        FilesUtil.getFilePathList(PathConstant.ENCRYPTED_DIR, ExtensionConstant.LIST);
+        FilesUtil.getFilePathList(PathConstant.ENCRYPT_DIR, ExtensionConstant.LIST);
 
     // リストファイルが存在しない場合は終了する
     if (filePathList.size() == 0) {
-      System.err.println("「" + PathConstant.ENCRYPTED_DIR + "」ディレクトリに「" + ExtensionConstant.LIST
+      System.err.println("「" + PathConstant.ENCRYPT_DIR + "」ディレクトリに「" + ExtensionConstant.LIST
           + "」ファイルが存在しません。");
       System.exit(1);
     }
@@ -98,18 +102,24 @@ public class AssetsDecryptor {
 
   /* パックファイルを復号します. **/
   private void decryptPack(List<Path> filePathList) {
-    // 「decrypted」ディレクトリを再作成する
-    FilesUtil.recreateDir(PathConstant.DECRYPTED_DIR);
+    // 「decrypt」ディレクトリを再作成する
+    FilesUtil.recreateDir(PathConstant.DECRYPT_DIR);
 
     // リストファイルの数だけ繰り返す
     for (Path filePath : filePathList) {
       String fileName = filePath.getFileName().toString();
 
-      // サーバーファイルの場合
-      if (fileName.contains("Server")) {
+      if (oldMode) {
         decryptPack(serverPackCipher, fileName);
-      } else if (fileName.contains("Local")) {
-        // ローカルファイルの場合
+        continue;
+      }
+
+      String lowerFileName = fileName.toLowerCase();
+
+      // サーバーファイルの場合
+      if (lowerFileName.contains("server")) {
+        decryptPack(serverPackCipher, fileName);
+      } else if (lowerFileName.contains("local")) {
         decryptPack(localPackCipher, fileName);
       } else {
         System.err.println("「" + fileName + "」はサーバーファイル、ローカルファイルのどちらでもありません。");
@@ -132,13 +142,16 @@ public class AssetsDecryptor {
     String baseName = FilesUtil.getBaseName(listFileName);
 
     // 暗号化されたパックファイルが存在するか確認する
-    Path packFilePath = PathConstant.ENCRYPTED_DIR.resolve(baseName + ExtensionConstant.PACK);
+    String packBaseName =
+        oldMode ? FilesUtil.resolveOldPackBaseName(baseName) : baseName;
+    Path packFilePath =
+        PathConstant.ENCRYPT_DIR.resolve(packBaseName + ExtensionConstant.PACK);
     if (Files.notExists(packFilePath)) {
       System.err.println("「" + packFilePath + "」ファイルが存在しません。");
       return;
     }
 
-    Path outputDir = PathConstant.DECRYPTED_DIR.resolve(baseName);
+    Path outputDir = PathConstant.DECRYPT_DIR.resolve(baseName);
     try {
       // 出力先のディレクトリを作成する
       Files.createDirectories(outputDir);
@@ -181,7 +194,7 @@ public class AssetsDecryptor {
 
         byte[] outputData = new byte[byteSize];
 
-        if ("ImageDataLocal".equals(baseName)) {
+        if (FilesUtil.isImageDataLocalBaseName(baseName)) {
           outputData = Arrays.copyOfRange(encryptedData, startByte, endByte);
         } else {
           try {
@@ -191,7 +204,7 @@ public class AssetsDecryptor {
           }
         }
 
-        Path outputFile = PathConstant.DECRYPTED_DIR.resolve(baseName).resolve(outputFileName);
+        Path outputFile = PathConstant.DECRYPT_DIR.resolve(baseName).resolve(outputFileName);
 
         Files.write(outputFile, outputData);
       }

@@ -2,6 +2,8 @@ package piggecutlet;
 
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
+import java.util.ArrayList;
+import java.util.List;
 import piggecutlet.apk.ApkBuilder;
 import piggecutlet.apk.ApkDecoder;
 import piggecutlet.apk.ApkMerger;
@@ -17,16 +19,26 @@ public class Main {
     // { } : 必須
     // [ ] : 任意
     String usage =
-        "Usage: java -jar battlecats-toolkit.jar { decrypt | encrypt } { jp | kr | en | tw }";
+        "Usage: java -jar battlecats-cryptor.jar { decrypt | encrypt } { jp | kr | en | tw } [--old]";
 
-    if (args.length < 2) {
+    List<String> positional = new ArrayList<>();
+    boolean oldMode = false;
+    for (String arg : args) {
+      if ("--old".equals(arg)) {
+        oldMode = true;
+      } else {
+        positional.add(arg);
+      }
+    }
+
+    if (positional.size() < 2) {
       System.out.println(usage);
       return;
     }
 
     String lang = "jp";
 
-    switch (args[1]) {
+    switch (positional.get(1)) {
       case "jp":
         lang = "jp";
         break;
@@ -44,7 +56,7 @@ public class Main {
         return;
     }
 
-    if ("decrypt".equals(args[0])) {
+    if ("decrypt".equals(positional.get(0))) {
       // XAPK の場合は APK に変換
       if (Files.exists(PathConstant.APP_XAPK)) {
         new ApkMerger().execute();
@@ -56,17 +68,17 @@ public class Main {
         System.out.println();
       }
 
-      new AssetsDecryptor(lang).main();
+      new AssetsDecryptor(lang, oldMode).main();
 
       System.out.println("完了 decrypt");
 
       return;
     }
 
-    if ("encrypt".equals(args[0])) {
+    if ("encrypt".equals(positional.get(0))) {
       System.out.println("開始 encrypt");
 
-      new AssetsEncryptor(lang).main();
+      new AssetsEncryptor(lang, oldMode).main();
 
       // app ディレクトリが存在する場合は再ビルドする
       if (Files.exists(PathConstant.APP_DIR)) {

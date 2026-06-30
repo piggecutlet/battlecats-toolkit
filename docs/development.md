@@ -7,13 +7,6 @@
 - apktool を v3 系に更新する
   `--debug` が `--debugable` になったり変更があるので確認してから更新する
 
-## 未使用
-
-- パッケージ `piggecutlet.eventdata`
-
-- クラス `ApkAligner`
-- クラス `ApkDownloader`
-
 ## debug.keystore
 
 - 生成

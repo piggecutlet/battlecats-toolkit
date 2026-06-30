@@ -51,18 +51,17 @@ public class PathConstant {
   /** 「workspace\app\root\assets」ディレクトリ(APKEditor.jar). */
   public static final Path ASSETS_DIR_BY_APKEDITOR = APP_DIR.resolve("root").resolve("assets");
 
-  /** 「workspace\decrypted」ディレクトリ. */
-  public static final Path DECRYPTED_DIR = WORKSPACE_DIR.resolve("decrypted");
+  /** 「workspace\decrypt」ディレクトリ. */
+  public static final Path DECRYPT_DIR = WORKSPACE_DIR.resolve("decrypt");
 
-  /** 「workspace\encrypted」ディレクトリ. */
-  public static final Path ENCRYPTED_DIR = WORKSPACE_DIR.resolve("encrypted");
+  /** 「workspace\encrypt」ディレクトリ. */
+  public static final Path ENCRYPT_DIR = WORKSPACE_DIR.resolve("encrypt");
 
   /** 「workspace\temp」ディレクトリ. */
   public static final Path TEMP_DIR = WORKSPACE_DIR.resolve("temp");
 
-  /** 「output\app.apk」. */
-  public static final Path OUTPUT_APK =
-      WORKSPACE_DIR.resolve("output").resolve(APP_APK.getFileName());
+  /** 「output.apk」. */
+  public static final Path OUTPUT_APK = Paths.get("output" + ExtensionConstant.APK);
 
   /** 「workspace\app\lib」ディレクトリ(apktool.jar). */
   public static final Path LIB_DIR_BY_APKTOOL = APP_DIR.resolve("lib");

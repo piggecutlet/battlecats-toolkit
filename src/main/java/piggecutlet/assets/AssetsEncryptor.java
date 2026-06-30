@@ -16,9 +16,9 @@ import javax.crypto.IllegalBlockSizeException;
 import piggecutlet.constant.Constant;
 import piggecutlet.constant.ExtensionConstant;
 import piggecutlet.constant.PathConstant;
-import piggecutlet.util.FilesUtil;
-import piggecutlet.util.GenerateUtil;
-import piggecutlet.util.PrintUtil;
+import piggecutlet.helper.FilesUtil;
+import piggecutlet.helper.GenerateUtil;
+import piggecutlet.helper.PrintUtil;
 
 /** アセットを暗号化するクラス. */
 public class AssetsEncryptor {
@@ -29,23 +29,29 @@ public class AssetsEncryptor {
   /** パックファイルを暗号化するCipherインスタンス. */
   private Cipher packCipher;
 
+  /** Local パックも Server パック形式（AES/ECB）で処理する. */
+  private final boolean oldMode;
+
   /** コンストラクタ. */
-  public AssetsEncryptor(String lang) {
+  public AssetsEncryptor(String lang, boolean oldMode) {
+    this.oldMode = oldMode;
     this.listCipher = GenerateUtil.generateListCipher(Cipher.ENCRYPT_MODE);
-    this.packCipher = GenerateUtil.generateLocalePackCipher(Cipher.ENCRYPT_MODE, lang);
+    this.packCipher = oldMode
+        ? GenerateUtil.generateServerPackCipher(Cipher.ENCRYPT_MODE, lang)
+        : GenerateUtil.generateLocalePackCipher(Cipher.ENCRYPT_MODE, lang);
   }
 
   /** アセットを暗号化するメソッド. */
   public void main() {
-    // 「workspace\decrypted」ディレクトリが存在しない場合は終了する
-    if (!Files.isDirectory(PathConstant.DECRYPTED_DIR)) {
-      PrintUtil.notExist(PathConstant.DECRYPTED_DIR.toString());
+    // 「workspace\decrypt」ディレクトリが存在しない場合は終了する
+    if (!Files.isDirectory(PathConstant.DECRYPT_DIR)) {
+      PrintUtil.notExist(PathConstant.DECRYPT_DIR.toString());
       System.exit(1);
     }
 
     // 暗号化するディレクトリを取得する
     List<Path> assetsDirList = new ArrayList<>();
-    try (DirectoryStream<Path> stream = Files.newDirectoryStream(PathConstant.DECRYPTED_DIR)) {
+    try (DirectoryStream<Path> stream = Files.newDirectoryStream(PathConstant.DECRYPT_DIR)) {
       for (Path entry : stream) {
         if (Files.isDirectory(entry)) {
           assetsDirList.add(entry);
@@ -57,7 +63,7 @@ public class AssetsEncryptor {
 
     // 暗号化するディレクトリが存在しない場合は終了する
     if (assetsDirList.size() == 0) {
-      System.err.println("Directory doesn't exist in " + PathConstant.DECRYPTED_DIR);
+      System.err.println("Directory doesn't exist in " + PathConstant.DECRYPT_DIR);
       System.exit(1);
     }
 
@@ -77,18 +83,20 @@ public class AssetsEncryptor {
 
   /* 暗号化されたパックファイルを作成します. **/
   private void encryptPack(List<Path> assetsDirList) {
-    // 「workspace\encrypted」ディレクトリを再作成する
-    FilesUtil.recreateDir(PathConstant.ENCRYPTED_DIR);
+    // 「workspace\encrypt」ディレクトリを再作成する
+    FilesUtil.recreateDir(PathConstant.ENCRYPT_DIR);
 
     // 「workspace\temp」ディレクトリを再作成する
     FilesUtil.recreateDir(PathConstant.TEMP_DIR);
 
     for (Path assetsDir : assetsDirList) {
-      // 「workspace\decrypted\DownloadLocal」から「workspace\encrypted\DownloadLocal.pack」を生成
-      String packFileName = assetsDir.getFileName() + ExtensionConstant.PACK;
-      Path packFilePath = PathConstant.ENCRYPTED_DIR.resolve(packFileName);
+      String assetsBaseName = assetsDir.getFileName().toString();
+      String packBaseName =
+          oldMode ? FilesUtil.resolveOldPackBaseName(assetsBaseName) : assetsBaseName;
+      String packFileName = packBaseName + ExtensionConstant.PACK;
+      Path packFilePath = PathConstant.ENCRYPT_DIR.resolve(packFileName);
 
-      String listFileName = assetsDir.getFileName() + ExtensionConstant.LIST;
+      String listFileName = assetsBaseName + ExtensionConstant.LIST;
       Path listFilePath = PathConstant.TEMP_DIR.resolve(listFileName);
 
       try (OutputStream os = Files.newOutputStream(packFilePath);
@@ -110,7 +118,7 @@ public class AssetsEncryptor {
         for (Path filePath : filePathList) {
           byte[] data = Files.readAllBytes(filePath);
 
-          if (!"ImageDataLocal".equals(assetsDir.getFileName().toString())) {
+          if (!FilesUtil.isImageDataLocalBaseName(assetsBaseName)) {
             try {
               data = packCipher.doFinal(data);
             } catch (IllegalBlockSizeException | BadPaddingException e) {
@@ -165,7 +173,7 @@ public class AssetsEncryptor {
       }
 
       // 暗号化した結果を書き込むファイル
-      Path encryptedFile = PathConstant.ENCRYPTED_DIR.resolve(path.getFileName());
+      Path encryptedFile = PathConstant.ENCRYPT_DIR.resolve(path.getFileName());
 
       try {
         // 暗号化した結果をファイルに書き込む
@@ -190,11 +198,11 @@ public class AssetsEncryptor {
     }
 
     List<Path> listFilePathList =
-        FilesUtil.getFilePathList(PathConstant.ENCRYPTED_DIR, ExtensionConstant.LIST);
+        FilesUtil.getFilePathList(PathConstant.ENCRYPT_DIR, ExtensionConstant.LIST);
     FilesUtil.copy(listFilePathList, assetsDir);
 
     List<Path> packFilePathList =
-        FilesUtil.getFilePathList(PathConstant.ENCRYPTED_DIR, ExtensionConstant.PACK);
+        FilesUtil.getFilePathList(PathConstant.ENCRYPT_DIR, ExtensionConstant.PACK);
     FilesUtil.copy(packFilePathList, assetsDir);
   }
 

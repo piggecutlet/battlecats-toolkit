@@ -1,4 +1,4 @@
-package piggecutlet.util;
+package piggecutlet.helper;
 
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;

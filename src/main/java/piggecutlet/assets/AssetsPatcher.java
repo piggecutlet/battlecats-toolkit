@@ -93,11 +93,11 @@ public class AssetsPatcher {
 
       for (String basename : localAssets) {
         Path oldListPath = assetsDir.resolve(basename + ExtensionConstant.LIST);
-        Path newListPath = PathConstant.ENCRYPTED_DIR.resolve(basename + ExtensionConstant.LIST);
+        Path newListPath = PathConstant.ENCRYPT_DIR.resolve(basename + ExtensionConstant.LIST);
         patchByForeach(libnativeByte, oldListPath, newListPath);
 
         Path oldPackPath = assetsDir.resolve(basename + ExtensionConstant.PACK);
-        Path newPackPath = PathConstant.ENCRYPTED_DIR.resolve(basename + ExtensionConstant.PACK);
+        Path newPackPath = PathConstant.ENCRYPT_DIR.resolve(basename + ExtensionConstant.PACK);
         patchByForeach(libnativeByte, oldPackPath, newPackPath);
       }
 
@@ -113,7 +113,7 @@ public class AssetsPatcher {
   }
 
   private void patchByForeach(byte[] libnativeByte, Path oldPath, Path newPath) {
-    // 「workspace\app\assets」と「workspace\encrypted」に存在しない場合は中断
+    // 「workspace\app\assets」と「workspace\encrypt」に存在しない場合は中断
     if (Files.notExists(oldPath) || Files.notExists(newPath)) {
       // System.out.println(oldPath + " or " + newPath + "doesn't exist.");
       return;

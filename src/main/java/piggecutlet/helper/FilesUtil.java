@@ -1,4 +1,4 @@
-package piggecutlet.util;
+package piggecutlet.helper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -64,6 +64,32 @@ public class FilesUtil {
   public static String getBaseName(String fileName) {
     // splitメソッドの引数は正規表現のため、特別な意味を持つ「.」はエスケープする必要がある
     return fileName.split("\\.")[0];
+  }
+
+  /**
+   * 古い形式のリストファイル名から対応するパックファイルのベース名を取得します.
+   *
+   * <p>例: datalocal1.list → datalocal2.pack
+   *
+   * @param listBaseName リストファイルのベース名
+   * @return 対応するパックファイルのベース名
+   */
+  public static String resolveOldPackBaseName(String listBaseName) {
+    if (listBaseName.endsWith("1")) {
+      return listBaseName.substring(0, listBaseName.length() - 1) + "2";
+    }
+    return listBaseName;
+  }
+
+  /**
+   * ImageDataLocal 系のベース名かどうかを判定します.
+   *
+   * @param baseName ベース名
+   * @return ImageDataLocal 系の場合は true
+   */
+  public static boolean isImageDataLocalBaseName(String baseName) {
+    return "ImageDataLocal".equals(baseName)
+        || baseName.toLowerCase().startsWith("imagedatalocal");
   }
 
   /**

@@ -6,7 +6,7 @@ import java.util.List;
 import piggecutlet.constant.ExtensionConstant;
 import piggecutlet.constant.PathConstant;
 import piggecutlet.helper.ProcessBuilderHelper;
-import piggecutlet.util.FilesUtil;
+import piggecutlet.helper.FilesUtil;
 
 public class ApkDecoder {
 
@@ -51,13 +51,13 @@ public class ApkDecoder {
     System.err.println();
     System.out.println("assets をコピーします。");
 
-    FilesUtil.recreateDir(PathConstant.ENCRYPTED_DIR);
+    FilesUtil.recreateDir(PathConstant.ENCRYPT_DIR);
 
     List<Path> listFilePathList = FilesUtil.getFilePathList(assets, ExtensionConstant.LIST);
-    FilesUtil.copy(listFilePathList, PathConstant.ENCRYPTED_DIR);
+    FilesUtil.copy(listFilePathList, PathConstant.ENCRYPT_DIR);
 
     List<Path> packFilePathList = FilesUtil.getFilePathList(assets, ExtensionConstant.PACK);
-    FilesUtil.copy(packFilePathList, PathConstant.ENCRYPTED_DIR);
+    FilesUtil.copy(packFilePathList, PathConstant.ENCRYPT_DIR);
   }
 
 }
